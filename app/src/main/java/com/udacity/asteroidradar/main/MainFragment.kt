@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -13,6 +14,8 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
+    private var asteroidAdapter : AsteroidAdapter? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val binding = FragmentMainBinding.inflate(inflater)
@@ -20,9 +23,20 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        setupAdapter(binding)
+
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    private fun setupAdapter(binding: FragmentMainBinding) {
+        asteroidAdapter = AsteroidAdapter()
+
+        binding.asteroidRecycler.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = asteroidAdapter
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -33,4 +47,5 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return true
     }
+
 }
