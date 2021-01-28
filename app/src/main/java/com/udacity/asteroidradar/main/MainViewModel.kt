@@ -15,9 +15,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            val result = asteroidRepository.refreshAsteroids()
+            asteroidRepository.refreshAsteroids()
+            asteroidRepository.refreshPictureOfDay()
         }
     }
 
+    val pictureOfDay = asteroidRepository.pictureOfDay
     val asteroidList = asteroidRepository.asteroids
+
 }

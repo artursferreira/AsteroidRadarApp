@@ -21,11 +21,11 @@
             style="@style/TextTitleStyle"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginTop="@dimen/small_margin"
+            android:text="@{asteroid.codename}"
             app:layout_constraintEnd_toStartOf="@+id/asteroidStatus"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{asteroid.codename}"
             tools:text="TextView" />
 
         <TextView
@@ -33,10 +33,10 @@
             style="@style/TextSubitleStyle"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginBottom="@dimen/small_margin"
+            android:text="@{asteroid.closeApproachDate}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/asteroidStatus"
             app:layout_constraintHorizontal_bias="0.0"
-            android:text="@{asteroid.closeApproachDate}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/asteroidCodename"
             tools:text="TextView" />
@@ -49,7 +49,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:asteroidStatusImage="@{asteroid.potentiallyHazardous}"
+            app:statusIcon="@{asteroid.potentiallyHazardous}"
             tools:srcCompat="@drawable/ic_status_normal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
