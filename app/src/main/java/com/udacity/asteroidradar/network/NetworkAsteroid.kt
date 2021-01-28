@@ -1,9 +1,7 @@
 package com.udacity.asteroidradar.network
 
-import android.os.Parcelable
 import com.squareup.moshi.JsonClass
 import com.udacity.asteroidradar.domain.Asteroid
-import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 data class NetworkAsteroid(

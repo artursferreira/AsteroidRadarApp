@@ -10,6 +10,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,13 +21,13 @@ interface AsteroidService {
         @Query("start_date") startDate: String? = null,
         @Query("end_date") endDate: String? = null,
         @Query("api_key") apiKey: String = Constants.NASA_KEY
-    ): Response<NetworkAsteroid>
+    ): String
 
     @GET("planetary/apod")
     fun getPictureOfDay(
         @Query("api_key") apiKey: String =
             Constants.NASA_KEY
-    ): Deferred<PictureOfDay>
+    ): String
 
 }
 
@@ -39,6 +40,7 @@ object Network {
     // Configure retrofit to parse JSON and use coroutines
     private val retrofit = Retrofit.Builder()
         .baseUrl(Constants.BASE_URL)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()

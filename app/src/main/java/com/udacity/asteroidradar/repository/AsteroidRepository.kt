@@ -1,22 +1,33 @@
 package com.udacity.asteroidradar.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.domain.asDatabaseModel
 import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.network.NetworkAsteroid
 import com.udacity.asteroidradar.network.asDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
-//TODO add database
-class AsteroidRepository {
 
-    suspend fun getAsteroids(): Asteroid? {
+class AsteroidRepository(private val database: AsteroidDatabase) {
+
+    val asteroids: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.getAsteroids()) {
+            it.asDomainModel()
+        }
+
+    suspend fun refreshAsteroids() {
         return withContext(Dispatchers.IO) {
-            val response = Network.asteroidService.getAsteroids()
+            val asteroids =
+                parseAsteroidsJsonResult(JSONObject(Network.asteroidService.getAsteroids()))
 
-            if (response.isSuccessful)
-                response.body()?.asDomainModel()
-            else null
+            database.asteroidDao.insertAll(*asteroids.asDatabaseModel())
         }
     }
 }
