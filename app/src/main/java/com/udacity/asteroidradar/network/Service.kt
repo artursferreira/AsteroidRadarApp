@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Constants
+import com.udacity.asteroidradar.api.getToday
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -14,7 +15,7 @@ interface AsteroidService {
 
     @GET("neo/rest/v1/feed")
     suspend fun getAsteroids(
-        @Query("start_date") startDate: String? = null,
+        @Query("start_date") startDate: String? = getToday(),
         @Query("end_date") endDate: String? = null,
         @Query("api_key") apiKey: String = Constants.NASA_KEY
     ): String
