@@ -17,7 +17,10 @@ import org.json.JSONObject
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
-    val pictureOfDay: PictureOfDay = database.asteroidDao.getPictureOfDay().asDomainModel()
+    val pictureOfDay: LiveData<PictureOfDay> =
+        Transformations.map(database.pictureOfDayDao.getPictureOfDay()) {
+            it?.asDomainModel()
+        }
 
     val asteroids: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.getAsteroids()) {
@@ -36,7 +39,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     suspend fun refreshPictureOfDay() {
         withContext(Dispatchers.IO) {
             val picture = Network.asteroidService.getPictureOfDay()
-            database.asteroidDao.insertPictureOfDay(picture.asDatabaseModel())
+            database.pictureOfDayDao.insertPictureOfDay(picture.asDatabaseModel())
         }
     }
 }

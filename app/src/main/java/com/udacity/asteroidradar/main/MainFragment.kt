@@ -28,8 +28,6 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
 
         setupAdapter(binding)
-        Picasso.with(context).load(viewModel.pictureOfDay.url)
-            .into(binding.activityMainImageOfTheDay)
 
         setHasOptionsMenu(true)
 
