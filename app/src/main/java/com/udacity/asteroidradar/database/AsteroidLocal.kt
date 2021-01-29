@@ -1,10 +1,8 @@
 package com.udacity.asteroidradar.database
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.udacity.asteroidradar.domain.Asteroid
-import com.udacity.asteroidradar.network.NetworkAsteroid
 
 @Entity
 data class AsteroidLocal(

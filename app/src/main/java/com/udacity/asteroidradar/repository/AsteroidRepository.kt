@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Constants.MEDIA_TYPE_IMAGE
@@ -14,6 +15,8 @@ import com.udacity.asteroidradar.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import retrofit2.HttpException
+import java.lang.Exception
 
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
@@ -30,19 +33,30 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val asteroids =
-                parseAsteroidsJsonResult(JSONObject(Network.asteroidService.getAsteroids()))
+            try {
+                val asteroids =
+                    parseAsteroidsJsonResult(JSONObject(Network.asteroidService.getAsteroids()))
 
-            database.asteroidDao.insertAll(*asteroids.asDatabaseModel())
+                database.asteroidDao.insertAll(*asteroids.asDatabaseModel())
+            } catch (e: Exception) {
+                Log.d("exception", e.toString())
+            }
         }
     }
 
     suspend fun refreshPictureOfDay() {
         withContext(Dispatchers.IO) {
-            val picture = Network.asteroidService.getPictureOfDay()
+            try {
+                val picture = Network.asteroidService.getPictureOfDay()
 
-            if (picture.mediaType == MEDIA_TYPE_IMAGE)
-                database.pictureOfDayDao.insertPictureOfDay(picture.asDatabaseModel())
+                if (picture.mediaType == MEDIA_TYPE_IMAGE)
+                    database.pictureOfDayDao.insertPictureOfDay(picture.asDatabaseModel())
+                else {
+                    //Ignore videos
+                }
+            } catch (e: Exception) {
+                Log.d("exception", e.toString())
+            }
         }
     }
 }
