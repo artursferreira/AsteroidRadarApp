@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Constants.MEDIA_TYPE_IMAGE
+import com.udacity.asteroidradar.api.getYesterday
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.asDomainModel
@@ -57,6 +58,12 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             } catch (e: Exception) {
                 Log.d("exception", e.toString())
             }
+        }
+    }
+
+    suspend fun deleteOldAsteroids() {
+        withContext(Dispatchers.IO) {
+            database.asteroidDao.delete(getYesterday())
         }
     }
 }

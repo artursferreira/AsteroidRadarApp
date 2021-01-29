@@ -66,3 +66,11 @@ fun getToday(): String {
     val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
     return dateFormat.format(currentTime)
 }
+
+fun getYesterday(): String {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DATE, -1)
+    val currentTime = calendar.time
+    val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+    return dateFormat.format(currentTime)
+}
